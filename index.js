@@ -140,6 +140,10 @@ app.get('/downloadCheckin', (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('PAssou');
+});
+
 app.listen(5000, () => {
   console.log('Servidor iniciado.');
 });
