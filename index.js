@@ -7,11 +7,7 @@ import cors from 'cors';
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-app.use(
-  cors({
-    origin: 'https://gabriel-eustaquio.github.io',
-  }),
-);
+app.use(cors());
 
 app.use(express.json());
 
