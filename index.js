@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 app.use(
   cors({
-    origin: 'https://gabriel-eustaquio.github.io/ondas/',
+    origin: 'https://gabriel-eustaquio.github.io',
   }),
 );
 
