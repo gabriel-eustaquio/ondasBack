@@ -4,6 +4,8 @@ import { dirname } from 'path';
 import XlsxPopulate from 'xlsx-populate';
 import cors from 'cors';
 
+const port = process.env.PORT || 5000;
+
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -140,6 +142,6 @@ app.get('/', (req, res) => {
   res.send('PAssou');
 });
 
-app.listen(5000, () => {
+app.listen(port, () => {
   console.log('Servidor iniciado.');
 });
