@@ -4,7 +4,7 @@ import { dirname } from 'path';
 import XlsxPopulate from 'xlsx-populate';
 import cors from 'cors';
 
-const port = process.env.PORT || 8005;
+const port = process.env.PORT || 5000;
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -16,7 +16,7 @@ app.use(express.json());
 app.post('/adicionar', async (req, res) => {
   try {
     const workbook = await XlsxPopulate.fromFileAsync('./cadastro.xlsx');
-    const sheet = workbook.sheet(1);
+    const sheet = workbook.sheet(0);
     console.log(req.body);
 
     const {
@@ -70,6 +70,15 @@ app.post('/adicionar', async (req, res) => {
   } catch (error) {
     console.error('Erro ao adicionar dados ao arquivo XLSX:', error);
     res.status(500).send('Erro ao adicionar dados ao arquivo XLSX.');
+  }
+});
+
+app.get('/download', (req, res) => {
+  try {
+    res.download('./cadastro.xlsx', 'cadastro.xlsx');
+  } catch (error) {
+    console.error('Erro ao fazer download do arquivo XLSX:', error);
+    res.status(500).send('Erro ao fazer download do arquivo XLSX.');
   }
 });
 
@@ -128,7 +137,7 @@ app.post('/addCheckinExcel', async (req, res) => {
     const chamadaWorkbook = await loadWorkbook(chamadaPath);
 
     const checkinSheet = checkinWorkbook.sheet(0);
-    const chamadaSheet = chamadaWorkbook.sheet(1); // Sheet 1 conforme especificação
+    const chamadaSheet = chamadaworkbook.sheet(0); // Sheet 1 conforme especificação
 
     const checkinData = getDataFromSheet(checkinSheet);
     const chamadaData = getDataFromSheet(chamadaSheet);
@@ -148,15 +157,6 @@ app.post('/addCheckinExcel', async (req, res) => {
   }
 });
 
-app.get('/download', (req, res) => {
-  try {
-    res.download('./cadastro.xlsx', 'cadastro.xlsx');
-  } catch (error) {
-    console.error('Erro ao fazer download do arquivo XLSX:', error);
-    res.status(500).send('Erro ao fazer download do arquivo XLSX.');
-  }
-});
-
 app.get('/downloadCheckinExcel', (req, res) => {
   try {
     res.download('./checkin.xlsx', 'checkin.xlsx');
@@ -173,10 +173,6 @@ app.get('/downloadChamadaExcel', (req, res) => {
     console.error('Erro ao fazer download do arquivo XLSX:', error);
     res.status(500).send('Erro ao fazer download do arquivo XLSX.');
   }
-});
-
-app.get('/', (req, res) => {
-  res.send('PAssou');
 });
 
 app.get('/dataCheckinExcel', async (req, res) => {
@@ -293,7 +289,7 @@ app.get('/updateChamadaExcel', async (req, res) => {
     const chamadaWorkbook = await loadWorkbook(chamadaPath);
 
     const checkinSheet = checkinWorkbook.sheet(0);
-    const chamadaSheet = chamadaWorkbook.sheet(1); // Sheet 1 conforme especificação
+    const chamadaSheet = chamadaworkbook.sheet(0); // Sheet 1 conforme especificação
 
     const checkinData = getDataFromSheet(checkinSheet);
     const chamadaData = getDataFromSheet(chamadaSheet);
@@ -313,166 +309,6 @@ app.get('/updateChamadaExcel', async (req, res) => {
   }
 });
 
-// app.post('/updateChamadaExcelFromRegisterForm', async (req, res) => {
-//   try {
-//     const workbook = await XlsxPopulate.fromFileAsync('./chamada.xlsx');
-//     const sheet = workbook.sheet(1);
-//     const {
-//       name,
-//       contact,
-//       hour,
-//       classOneDate,
-//       classOneTeacher,
-//       token,
-//       childs,
-//       classTwoDate,
-//       classTwoTeacher,
-//       classThreeDate,
-//       classThreeTeacher,
-//       fitToServe,
-//       classFourDate,
-//       shift,
-//       conclude,
-//       ministry,
-//       personality,
-//       gifts,
-//       birthday,
-//       birthyear,
-//       age,
-//       acceptJesus,
-//       whenAcceptJesus,
-//       whereAcceptJesus,
-//       address,
-//       howMeetIlan,
-//       introducedIlan,
-//       baptized,
-//       whenBaptized,
-//       whereBaptized,
-//       wantsBaptize,
-//       meetIn,
-//       meetedIn,
-//     } = req.body;
-//     console.log(name);
-//     const data = sheet.usedRange().value();
-//     console.log(data);
-//     const normalizedCheckinName = normalizeString(name);
-
-//     const rowIndex = data.findIndex(
-//       (row) => normalizeString(row[1]) === normalizedCheckinName,
-//     );
-//     if (rowIndex > -1) {
-//       console.log('Atualizando na linha: ', rowIndex + 1);
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
-// app.post('/updateChamadaExcelFromRegisterForm', async (req, res) => {
-//   try {
-//     const workbook = await XlsxPopulate.fromFileAsync('./chamada.xlsx');
-//     const sheet = workbook.sheet(1); // Mudando para a segunda aba
-//     const {
-//       name,
-//       contact,
-//       hour,
-//       classOneDate,
-//       classOneTeacher,
-//       token,
-//       childs,
-//       classTwoDate,
-//       classTwoTeacher,
-//       classThreeDate,
-//       classThreeTeacher,
-//       fitToServe,
-//       classFourDate,
-//       shift,
-//       conclude,
-//       ministry,
-//       personality,
-//       gifts,
-//       birthday,
-//       birthyear,
-//       age,
-//       acceptJesus,
-//       whenAcceptJesus,
-//       whereAcceptJesus,
-//       address,
-//       howMeetIlan,
-//       introducedIlan,
-//       baptized,
-//       whenBaptized,
-//       whereBaptized,
-//       wantsBaptize,
-//       meetIn,
-//       meetedIn,
-//     } = req.body;
-
-//     const data = sheet.usedRange().value();
-//     const normalizedCheckinName = normalizeString(name);
-
-//     const rowIndex = data.findIndex(
-//       (row) => normalizeString(row[1]) === normalizedCheckinName, // Supondo que a coluna B contém os nomes
-//     );
-
-//     if (rowIndex > -1) {
-//       console.log('Atualizando na linha: ', rowIndex + 1); // +1 porque a linha no Excel começa em 1
-
-//       // Atualizar valores na linha encontrada
-//       sheet.cell(`C${rowIndex + 1}`).value(contact); // Atualize conforme o índice da coluna desejada
-//       sheet.cell(`D${rowIndex + 1}`).value(hour); // Ajuste os índices conforme necessário
-//       sheet.cell(`E${rowIndex + 1}`).value(classOneDate);
-//       sheet.cell(`F${rowIndex + 1}`).value(classOneTeacher);
-//       sheet.cell(`G${rowIndex + 1}`).value(token);
-//       sheet.cell(`H${rowIndex + 1}`).value(childs);
-//       sheet.cell(`I${rowIndex + 1}`).value(classTwoDate);
-//       sheet.cell(`J${rowIndex + 1}`).value(classTwoTeacher);
-//       sheet.cell(`K${rowIndex + 1}`).value(classThreeDate);
-//       sheet.cell(`L${rowIndex + 1}`).value(classThreeTeacher);
-//       sheet.cell(`M${rowIndex + 1}`).value(fitToServe);
-//       sheet.cell(`N${rowIndex + 1}`).value(classFourDate);
-//       sheet.cell(`O${rowIndex + 1}`).value(shift);
-//       sheet.cell(`P${rowIndex + 1}`).value(conclude);
-//       sheet.cell(`Q${rowIndex + 1}`).value(ministry);
-//       sheet.cell(`R${rowIndex + 1}`).value(personality);
-//       sheet.cell(`S${rowIndex + 1}`).value(gifts);
-//       sheet.cell(`T${rowIndex + 1}`).value(birthday);
-//       sheet.cell(`U${rowIndex + 1}`).value(birthyear);
-//       sheet.cell(`V${rowIndex + 1}`).value(age);
-//       sheet.cell(`W${rowIndex + 1}`).value(acceptJesus);
-//       sheet.cell(`X${rowIndex + 1}`).value(whenAcceptJesus);
-//       sheet.cell(`Y${rowIndex + 1}`).value(whereAcceptJesus);
-//       sheet.cell(`Z${rowIndex + 1}`).value(address);
-//       sheet.cell(`AA${rowIndex + 1}`).value(howMeetIlan);
-//       sheet.cell(`AB${rowIndex + 1}`).value(introducedIlan);
-//       sheet.cell(`AC${rowIndex + 1}`).value(baptized);
-//       sheet.cell(`AD${rowIndex + 1}`).value(whenBaptized);
-//       sheet.cell(`AE${rowIndex + 1}`).value(whereBaptized);
-//       sheet.cell(`AF${rowIndex + 1}`).value(wantsBaptize);
-//       sheet.cell(`AG${rowIndex + 1}`).value(meetIn);
-//       sheet.cell(`AH${rowIndex + 1}`).value(meetedIn);
-
-//       await workbook.toFileAsync('./chamada.xlsx');
-//       res.status(200).send('Atualização concluída com sucesso');
-//     } else {
-//       console.log('Aluno não encontrado');
-//       res.status(404).send('Aluno não encontrado');
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).send('Erro ao atualizar o arquivo');
-//   }
-// });
-
-function normalizeStrings(str) {
-  return str
-    ? str
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-    : '';
-}
-
 // Função para encontrar a última linha preenchida na coluna especificada
 const findLastFilledRow = (sheet, col) => {
   let rowNumber = 1; // Começa na linha 1 (a primeira linha no Excel)
@@ -489,7 +325,7 @@ const findLastFilledRow = (sheet, col) => {
 app.post('/updateChamadaExcelFromRegisterForm', async (req, res) => {
   try {
     const workbook = await XlsxPopulate.fromFileAsync('./chamada.xlsx');
-    const sheet = workbook.sheet(1); // Mudando para a segunda aba
+    const sheet = workbook.sheet(0); // Mudando para a segunda aba
     const {
       name,
       contact,
@@ -524,6 +360,12 @@ app.post('/updateChamadaExcelFromRegisterForm', async (req, res) => {
       wantsBaptize,
       meetIn,
       meetedIn,
+      ministryTwo,
+      ministryThree,
+      maritalStatus,
+      nameSpouse,
+      nameChilds,
+      memberIlan
     } = req.body;
 
     const data = sheet.usedRange().value();
@@ -650,6 +492,24 @@ app.post('/updateChamadaExcelFromRegisterForm', async (req, res) => {
     if (meetedIn) {
       updateCell('AI', meetedIn);
     }
+    if (ministryTwo) {
+      updateCell('AJ', ministryTwo);
+    }    
+    if (ministryThree) {
+      updateCell('AK', ministryThree);
+    }    
+    if (maritalStatus) {
+      updateCell('AL', maritalStatus);
+    }        
+    if (nameSpouse) {
+      updateCell('AM', nameSpouse);
+    }        
+    if (nameChilds) {
+      updateCell('AN', nameChilds);
+    }    
+    if (memberIlan) {
+      updateCell('AO', memberIlan);
+    }        
 
     await workbook.toFileAsync('./chamada.xlsx');
     res.status(200).send('Atualização concluída com sucesso');
@@ -663,7 +523,7 @@ app.post('/updateChamadaExcelFromRegisterForm', async (req, res) => {
 app.post('/dataChamadaExcelFromRegisterForm', async (req, res) => {
   try {
     const workbook = await XlsxPopulate.fromFileAsync('./chamada.xlsx');
-    const sheet = workbook.sheet(1); // Mudando para a segunda aba
+    const sheet = workbook.sheet(0); // Mudando para a segunda aba
     const { name } = req.body;
 
     const data = sheet.usedRange().value();
@@ -700,20 +560,10 @@ app.post('/dataChamadaExcelFromRegisterForm', async (req, res) => {
   }
 });
 
-// Retorna alunos com inicial
-function normalizeStringss(str) {
-  return str
-    ? str
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-    : '';
-}
-
 app.post('/dataChamadaExcelFromRegisterFormInitial', async (req, res) => {
   try {
     const workbook = await XlsxPopulate.fromFileAsync('./chamada.xlsx');
-    const sheet = workbook.sheet(1); // Mudando para a segunda aba
+    const sheet = workbook.sheet(0); // Mudando para a segunda aba
     const { name } = req.body;
 
     const data = sheet.usedRange().value();
@@ -727,15 +577,7 @@ app.post('/dataChamadaExcelFromRegisterFormInitial', async (req, res) => {
       console.log('Dados encontrados para a inicial:', name);
 
       // Obter nome das colunas na linha 3
-      const columnNames = sheet.range('B3:AI3').value()[0];
-
-      // // Mapear os resultados
-      // const results = matchedRows.map((row, index) => {
-      //   return {
-      //     row: data.indexOf(row) + 1, // +1 porque a linha no Excel começa em 1
-      //     data: row,
-      //   };
-      // });
+      const columnNames = sheet.range('B3:AO3').value()[0];
 
       // Mapear os resultados, extraindo apenas valores de texto
       const results = matchedRows.map((row) => {
@@ -763,18 +605,10 @@ app.post('/dataChamadaExcelFromRegisterFormInitial', async (req, res) => {
   }
 });
 
-// // Rota para obter nome
-// app.get('/names', async (req, res) => {
-//   const workbook = await XlsxPopulate.fromFileAsync('./chamada.xlsx');
-//   const sheet = workbook.sheet(1);
-//   const values = sheet.usedRange().value();
-//   console.log(values);
-// });
-
 app.get('/names', async (req, res) => {
   try {
     const workbook = await XlsxPopulate.fromFileAsync('./chamada.xlsx');
-    const sheet = workbook.sheet(1);
+    const sheet = workbook.sheet(0);
 
     // Obter todas as linhas usadas na planilha
     const usedRange = sheet.usedRange();
@@ -794,6 +628,130 @@ app.get('/names', async (req, res) => {
     console.error(error);
     res.status(500).send('Error reading the Excel file');
   }
+});
+
+app.post('/certificate', async (req, res) => {
+  const { month, year } = req.body;
+  const monthValue = month.value.slice(4, 6);
+  const yearValue = year.value;
+
+  const workbook = await XlsxPopulate.fromFileAsync('./chamada.xlsx');
+  const sheet = workbook.sheet(0);
+
+  // Obter todas as linhas usadas na planilha
+  const usedRange = sheet.usedRange();
+  const rows = usedRange.value().slice(1);
+
+  const filtered = rows.filter((row) => {
+    return row[5] && row[9] && row[11] && row[14];
+  });
+
+  res.send(filtered);
+});
+
+app.post('/addMembershipToChamadaExcel', async (req, res) => {
+  try {
+    const workbook = await XlsxPopulate.fromFileAsync('./chamada.xlsx');
+    const sheet = workbook.sheet(0); // Mudando para a segunda aba
+    const {
+      name,
+      dateOfBirth,
+      telephone,
+      address,
+      maritalStatus,
+      nameSpouse,
+      nameChilds,
+      acceptedJesus,
+      whenAcceptedJesus,
+      whereAcceptedJesus,
+      baptized,
+      whenBaptized,
+      whereBaptized,
+      completedClassOne,
+      whenCompletedClassOne,
+      memberIlan,
+    } = req.body;
+
+    const data = sheet.usedRange().value();
+    const normalizedCheckinName = name.trim();
+
+    let rowIndex = data.findIndex(
+      (row) => row[1] && row[1].trim() === normalizedCheckinName, // Supondo que a coluna B contém os nomes
+    );
+
+    if (rowIndex === -1) {
+      // Se o nome não for encontrado, adicionar nova linha
+      rowIndex = findLastFilledRow(sheet, 'B');
+      sheet.cell(`B${rowIndex + 1}`).value(name); // Adicionar o nome na nova linha
+      console.log('Adicionando na linha: ', rowIndex);
+    }
+
+    console.log('Atualizando na linha: ', rowIndex + 1); // +1 porque a linha no Excel começa em 1
+
+    // Função para atualizar ou manter valor existente
+    const updateCell = (col, value) => {
+      const cell = sheet.cell(`${col}${rowIndex + 1}`);
+      if (value !== undefined && value !== null) {
+        cell.value(value);
+      } else if (cell.value() === null) {
+        cell.value(''); // Manter a célula vazia se o valor existente for nulo e não for fornecido um novo valor
+      }
+    };
+
+    // Atualizar ou manter os valores na linha encontrada ou nova linha
+    if (telephone) {
+      updateCell('C', telephone);
+    }
+    if (whenCompletedClassOne) {
+      updateCell('F', whenCompletedClassOne);
+    }
+    if (dateOfBirth) {
+      updateCell('U', dateOfBirth);
+    }
+    if (acceptedJesus) {
+      updateCell('X', acceptedJesus);
+    }
+    if (whenAcceptedJesus) {
+      updateCell('Y', whenAcceptedJesus);
+    }
+    if (whereAcceptedJesus) {
+      updateCell('Z', whereAcceptedJesus);
+    }
+    if (address) {
+      updateCell('AA', address);
+    }
+    if (baptized) {
+      updateCell('AD', baptized);
+    }
+    if (whenBaptized) {
+      updateCell('AE', whenBaptized);
+    }
+    if (whereBaptized) {
+      updateCell('AF', whereBaptized);
+    }
+    if (maritalStatus) {
+      updateCell('AL', maritalStatus);
+    }
+    if (nameSpouse) {
+      updateCell('AM', nameSpouse);
+    }
+    if (nameChilds) {
+      updateCell('AN', nameChilds);
+    }
+    if (memberIlan) {
+      updateCell('AO', memberIlan);
+    }
+
+    await workbook.toFileAsync('./chamada.xlsx');
+    res.status(200).send('Atualização concluída com sucesso');
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Erro ao atualizar o arquivo');
+  }
+});
+
+app.get('/', (req, res) => {
+  res.send('PAssou');
 });
 
 app.listen(port, () => {
