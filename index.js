@@ -221,61 +221,125 @@ function updateOrAddData(sheet, sheetData, checkinRow) {
   const rowIndex = sheetData.findIndex(
     (row) => normalizeString(row[1]) === normalizedCheckinName,
   );
-  if (rowIndex > -1) {
-    // Atualizar dados existentes
-    console.log(`Atualizando dados na linha: ${rowIndex + 1} ${aula}`); // Debug
-    if (!sheetData[rowIndex][8]) {
-      sheet.cell(rowIndex + 1, 9).value(filhoDeMenor); // Filhos (Coluna I)
-    }
-    if (!sheetData[rowIndex[3]]) {
+  if (dataHora.includes(',')) {
+    if (rowIndex > -1) {
+      // Atualizar dados existentes
+      console.log(`Atualizando dados na linha: ${rowIndex + 1} ${aula}`); // Debug
+      if (!sheetData[rowIndex][8]) {
+        sheet.cell(rowIndex + 1, 9).value(filhoDeMenor); // Filhos (Coluna I)
+      }
+      if (!sheetData[rowIndex[3]]) {
+        if (+dataHora.split(',')[1].slice(1, 3) < 12) {
+          sheet.cell(rowIndex + 1, 4).value('09h');
+          sheet.cell(rowIndex + 1, 16).value('MANHA');
+        } else {
+          sheet.cell(rowIndex + 1, 4).value('18h');
+          sheet.cell(rowIndex + 1, 16).value('NOITE');
+        }
+      }
+      if (aula == 'Aula 01' && !sheetData[rowIndex][6]) {
+        sheet.cell(rowIndex + 1, 7).value(professor);
+        sheet.cell(rowIndex + 1, 6).value(dataHora.split(',')[0]);
+      }
+      if (aula == 'Aula 02' && !sheetData[rowIndex][10]) {
+        sheet.cell(rowIndex + 1, 11).value(professor);
+        sheet.cell(rowIndex + 1, 10).value(dataHora.split(',')[0]);
+      }
+      if (aula == 'Aula 03' && !sheetData[rowIndex][12]) {
+        sheet.cell(rowIndex + 1, 13).value(professor);
+        sheet.cell(rowIndex + 1, 12).value(dataHora.split(',')[0]);
+      }
+      if (aula == 'Aula 04' && !sheetData[rowIndex][15]) {
+        sheet.cell(rowIndex + 1, 15).value(dataHora.split(',')[0]);
+      }
+    } else {
+      // Adicionar nova linha na última linha disponível
+      let lastRow = findLastRow(sheet);
+      console.log(`Adicionando na linha: ${lastRow}`); // Debug para verificar a última linha
+      sheet.cell(lastRow, 2).value(nomeCompleto); // Nome (Coluna B)
+      sheet.cell(lastRow, 9).value(filhoDeMenor); // Filhos (Coluna I)
       if (+dataHora.split(',')[1].slice(1, 3) < 12) {
-        sheet.cell(rowIndex + 1, 4).value('09h');
-        sheet.cell(rowIndex + 1, 16).value('MANHA');
+        sheet.cell(lastRow, 4).value('09h');
+        sheet.cell(lastRow, 16).value('MANHA');
       } else {
-        sheet.cell(rowIndex + 1, 4).value('18h');
-        sheet.cell(rowIndex + 1, 16).value('NOITE');
+        sheet.cell(lastRow, 4).value('18h');
+        sheet.cell(lastRow, 16).value('NOITE');
+      }
+      if (aula == 'Aula 01') {
+        sheet.cell(lastRow, 7).value(professor); // Filhos (Coluna I)
+        sheet.cell(lastRow, 6).value(dataHora.split(',')[0]);
+      }
+      if (aula == 'Aula 02') {
+        sheet.cell(lastRow, 11).value(professor); // Filhos (Coluna I)
+        sheet.cell(lastRow, 10).value(dataHora.split(',')[0]);
+      }
+      if (aula == 'Aula 03') {
+        sheet.cell(lastRow, 13).value(professor); // Filhos (Coluna I)
+        sheet.cell(lastRow, 12).value(dataHora.split(',')[0]);
+      }
+      if (aula == 'Aula 04') {
+        sheet.cell(lastRow, 15).value(dataHora.split(',')[0]);
       }
     }
-    if (aula == 'Aula 01' && !sheetData[rowIndex][6]) {
-      sheet.cell(rowIndex + 1, 7).value(professor);
-      sheet.cell(rowIndex + 1, 6).value(dataHora.split(',')[0]);
-    }
-    if (aula == 'Aula 02' && !sheetData[rowIndex][10]) {
-      sheet.cell(rowIndex + 1, 11).value(professor);
-      sheet.cell(rowIndex + 1, 10).value(dataHora.split(',')[0]);
-    }
-    if (aula == 'Aula 03' && !sheetData[rowIndex][12]) {
-      sheet.cell(rowIndex + 1, 13).value(professor);
-      sheet.cell(rowIndex + 1, 12).value(dataHora.split(',')[0]);
-    }
-    if (aula == 'Aula 04' && !sheetData[rowIndex][15]) {
-      sheet.cell(rowIndex + 1, 15).value(dataHora.split(',')[0]);
-    }
   } else {
-    // Adicionar nova linha na última linha disponível
-    let lastRow = findLastRow(sheet);
-    console.log(`Adicionando na linha: ${lastRow}`); // Debug para verificar a última linha
-    sheet.cell(lastRow, 2).value(nomeCompleto); // Nome (Coluna B)
-    sheet.cell(lastRow, 9).value(filhoDeMenor); // Filhos (Coluna I)
-    if (+dataHora.split(',')[1].slice(1, 3) < 12) {
-      sheet.cell(lastRow, 4).value('09h');
+    if (rowIndex > -1) {
+      // Atualizar dados existentes
+      console.log(`Atualizando dados na linha: ${rowIndex + 1} ${aula}`); // Debug
+      if (!sheetData[rowIndex][8]) {
+        sheet.cell(rowIndex + 1, 9).value(filhoDeMenor); // Filhos (Coluna I)
+      }
+      if (!sheetData[rowIndex[3]]) {
+        if (+dataHora.split('/')[2].slice(5, 7) < 12) {
+          sheet.cell(rowIndex + 1, 4).value('09h');
+          sheet.cell(rowIndex + 1, 16).value('MANHA');
+        } else {
+          sheet.cell(rowIndex + 1, 4).value('18h');
+          sheet.cell(rowIndex + 1, 16).value('NOITE');
+        }
+      }
+      if (aula == 'Aula 01' && !sheetData[rowIndex][6]) {
+        sheet.cell(rowIndex + 1, 7).value(professor);
+        sheet.cell(rowIndex + 1, 6).value(dataHora.split(' ')[0]);
+      }
+      if (aula == 'Aula 02' && !sheetData[rowIndex][10]) {
+        sheet.cell(rowIndex + 1, 11).value(professor);
+        sheet.cell(rowIndex + 1, 10).value(dataHora.split(' ')[0]);
+      }
+      if (aula == 'Aula 03' && !sheetData[rowIndex][12]) {
+        sheet.cell(rowIndex + 1, 13).value(professor);
+        sheet.cell(rowIndex + 1, 12).value(dataHora.split(' ')[0]);
+      }
+      if (aula == 'Aula 04' && !sheetData[rowIndex][15]) {
+        sheet.cell(rowIndex + 1, 15).value(dataHora.split(' ')[0]);
+      }
     } else {
-      sheet.cell(lastRow, 4).value('18h');
-    }
-    if (aula == 'Aula 01') {
-      sheet.cell(lastRow, 7).value(professor); // Filhos (Coluna I)
-      sheet.cell(lastRow, 6).value(dataHora.split(',')[0]);
-    }
-    if (aula == 'Aula 02') {
-      sheet.cell(lastRow, 11).value(professor); // Filhos (Coluna I)
-      sheet.cell(lastRow, 10).value(dataHora.split(',')[0]);
-    }
-    if (aula == 'Aula 03') {
-      sheet.cell(lastRow, 13).value(professor); // Filhos (Coluna I)
-      sheet.cell(lastRow, 12).value(dataHora.split(',')[0]);
-    }
-    if (aula == 'Aula 04') {
-      sheet.cell(lastRow, 15).value(dataHora.split(',')[0]);
+      // Adicionar nova linha na última linha disponível
+      let lastRow = findLastRow(sheet);
+      console.log(`Adicionando na linha: ${lastRow}`); // Debug para verificar a última linha
+      sheet.cell(lastRow, 2).value(nomeCompleto); // Nome (Coluna B)
+      sheet.cell(lastRow, 9).value(filhoDeMenor); // Filhos (Coluna I)
+      if (+dataHora.split('/')[2].slice(5, 7) < 12) {
+        sheet.cell(lastRow, 4).value('09h');
+        sheet.cell(lastRow, 16).value('MANHA');
+      } else {
+        sheet.cell(lastRow, 4).value('18h');
+        sheet.cell(lastRow, 16).value('NOITE');
+      }
+      if (aula == 'Aula 01') {
+        sheet.cell(lastRow, 7).value(professor); // Filhos (Coluna I)
+        sheet.cell(lastRow, 6).value(dataHora.split(' ')[0]);
+      }
+      if (aula == 'Aula 02') {
+        sheet.cell(lastRow, 11).value(professor); // Filhos (Coluna I)
+        sheet.cell(lastRow, 10).value(dataHora.split(' ')[0]);
+      }
+      if (aula == 'Aula 03') {
+        sheet.cell(lastRow, 13).value(professor); // Filhos (Coluna I)
+        sheet.cell(lastRow, 12).value(dataHora.split(' ')[0]);
+      }
+      if (aula == 'Aula 04') {
+        sheet.cell(lastRow, 15).value(dataHora.split(' ')[0]);
+      }
     }
   }
 }
@@ -757,5 +821,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log('Servidor iniciado.');
 });
-
-// .
