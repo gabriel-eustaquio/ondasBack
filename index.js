@@ -227,6 +227,7 @@ function updateOrAddData(sheet, sheetData, checkinRow) {
       console.log(`Atualizando dados na linha: ${rowIndex + 1} ${aula}`); // Debug
       if (!sheetData[rowIndex][8]) {
         sheet.cell(rowIndex + 1, 9).value(filhoDeMenor); // Filhos (Coluna I)
+        sheet.cell(rowIndex + 1, 40).value(nomeDosFilhos); // Nome dos Filhos (Coluna AN)
       }
       if (!sheetData[rowIndex[3]]) {
         if (+dataHora.split(',')[1].slice(1, 3) < 12) {
@@ -258,6 +259,7 @@ function updateOrAddData(sheet, sheetData, checkinRow) {
       console.log(`Adicionando na linha: ${lastRow}`); // Debug para verificar a última linha
       sheet.cell(lastRow, 2).value(nomeCompleto); // Nome (Coluna B)
       sheet.cell(lastRow, 9).value(filhoDeMenor); // Filhos (Coluna I)
+      sheet.cell(lastRow, 40).value(nomeDosFilhos); // Nome dos Filhos (Coluna AN)
       if (+dataHora.split(',')[1].slice(1, 3) < 12) {
         sheet.cell(lastRow, 4).value('09h');
         sheet.cell(lastRow, 16).value('MANHA');
@@ -287,6 +289,7 @@ function updateOrAddData(sheet, sheetData, checkinRow) {
       console.log(`Atualizando dados na linha: ${rowIndex + 1} ${aula}`); // Debug
       if (!sheetData[rowIndex][8]) {
         sheet.cell(rowIndex + 1, 9).value(filhoDeMenor); // Filhos (Coluna I)
+        sheet.cell(rowIndex + 1, 40).value(nomeDosFilhos); // Nome dos Filhos (Coluna AN)
       }
       if (!sheetData[rowIndex[3]]) {
         if (+dataHora.split('/')[2].slice(5, 7) < 12) {
@@ -318,6 +321,7 @@ function updateOrAddData(sheet, sheetData, checkinRow) {
       console.log(`Adicionando na linha: ${lastRow}`); // Debug para verificar a última linha
       sheet.cell(lastRow, 2).value(nomeCompleto); // Nome (Coluna B)
       sheet.cell(lastRow, 9).value(filhoDeMenor); // Filhos (Coluna I)
+      sheet.cell(lastRow, 40).value(nomeDosFilhos); // Nome dos Filhos (Coluna AN)
       if (+dataHora.split('/')[2].slice(5, 7) < 12) {
         sheet.cell(lastRow, 4).value('09h');
         sheet.cell(lastRow, 16).value('MANHA');
