@@ -217,6 +217,7 @@ function updateOrAddData(sheet, sheetData, checkinRow) {
   const [nomeCompleto, dataHora, filhoDeMenor, nomeDosFilhos, professor, aula] =
     checkinRow;
   const normalizedCheckinName = normalizeString(nomeCompleto);
+  console.log('NOME DOS FILHOS: ', nomeDosFilhos);
 
   const rowIndex = sheetData.findIndex(
     (row) => normalizeString(row[1]) === normalizedCheckinName,
